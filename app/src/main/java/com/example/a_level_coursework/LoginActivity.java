@@ -86,9 +86,7 @@ public class LoginActivity extends AppCompatActivity {
         sEmail = emailID.getText().toString();
         sPassword = password.getText().toString();
         //confirms if inputs are valid or invalid
-        if (!emailValidation() || !passwordValidation()){
-            return;
-        }else{
+        if (emailValidation() && passwordValidation()){
             //checks if inputs are correct
             mFirebaseAuth.signInWithEmailAndPassword(sEmail, sPassword)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
