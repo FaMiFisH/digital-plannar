@@ -24,14 +24,13 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private EditText emailID, password, checkboxPassword;
     private CheckBox showPassword;
-    private String sEmail, sPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
-        // initialising database instances
+        // initialising database authentication instance
         mFirebaseAuth = FirebaseAuth.getInstance();
 
         if(mFirebaseAuth.getCurrentUser() != null){     //if user is already logged in
@@ -54,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /* checks to see if inputted email is valid */
-    private boolean emailValidation(){
+    private boolean emailValidation(String sEmail){
         if (sEmail.isEmpty()){
             emailID.setError("Fields can't be empty");
             return false;
@@ -68,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /* checks if inputted password is valid */
-    private boolean passwordValidation() {
+    private boolean passwordValidation(String sPassword) {
         if (sPassword.isEmpty()) {
             password.setError("Field can't be empty");
             return false;
@@ -83,10 +82,10 @@ public class LoginActivity extends AppCompatActivity {
         //retrieves user inputs and converts them into string
         emailID = findViewById(R.id.loginEmail);
         password = findViewById(R.id.loginPassword);
-        sEmail = emailID.getText().toString();
-        sPassword = password.getText().toString();
+        String sEmail = emailID.getText().toString();
+        String sPassword = password.getText().toString();
 
-        if(emailValidation() && passwordValidation()){      //validity check
+        if(emailValidation(sEmail) && passwordValidation(sPassword)){      //validity check
             mFirebaseAuth.signInWithEmailAndPassword(sEmail, sPassword)     //correctness check
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
