@@ -205,6 +205,7 @@ public class RegisterActivity extends AppCompatActivity {
                             if (!task.isSuccessful()){
                                 Toast.makeText(RegisterActivity.this, "Registration was unsuccessful", Toast.LENGTH_SHORT).show();
                             }else{
+                                //gets the suer ID after it has been created
                                 String userID = mFirebaseAuth.getCurrentUser().getUid();
                                 //initialises database reference
                                 DocumentReference userRef = mFirestore
