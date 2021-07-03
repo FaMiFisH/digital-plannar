@@ -19,41 +19,41 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
-    FirebaseAuth mFirebaseAuth;
-    EditText emailID, password, checkboxPassword;
-    CheckBox showPassword;
-    String sEmail, sPassword;
+
+    // initialising variables
+    private FirebaseAuth mFirebaseAuth;
+    private EditText emailID, password, checkboxPassword;
+    private CheckBox showPassword;
+    private String sEmail, sPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
-        //initialises firebase authentication
+        // initialising database instances
         mFirebaseAuth = FirebaseAuth.getInstance();
 
-        //logs user in if user has already logged in before
-        if(mFirebaseAuth.getCurrentUser() != null){
+        if(mFirebaseAuth.getCurrentUser() != null){     //if user is already logged in
             startActivity(new Intent(this, MainActivity.class));
         }
 
-        //listener to respond when checkbox is checked
+        //makes password (un)hidden
         showPassword = findViewById(R.id.loginShowPassword);
         showPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //if it is checked, make the password visible
                 checkboxPassword = findViewById(R.id.loginPassword);
                 if(showPassword.isChecked()){
                     checkboxPassword.setInputType(InputType.TYPE_CLASS_TEXT);
-                }else{ //if not, make it disclosed
+                }else{
                     checkboxPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
             }
         });
     }
 
-    //checks to see if inputted email is valid
+    /* checks to see if inputted email is valid */
     private boolean emailValidation(){
         if (sEmail.isEmpty()){
             emailID.setError("Fields can't be empty");
@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    //checks if inputted password is valid
+    /* checks if inputted password is valid */
     private boolean passwordValidation() {
         if (sPassword.isEmpty()) {
             password.setError("Field can't be empty");
@@ -78,25 +78,22 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    //logs user in if inputs are valid and correct
+    /* logs user in if inputs are valid and correct */
     public void onLoginClick(View view) {
         //retrieves user inputs and converts them into string
         emailID = findViewById(R.id.loginEmail);
         password = findViewById(R.id.loginPassword);
         sEmail = emailID.getText().toString();
         sPassword = password.getText().toString();
-        //confirms if inputs are valid or invalid
-        if (emailValidation() && passwordValidation()){
-            //checks if inputs are correct
-            mFirebaseAuth.signInWithEmailAndPassword(sEmail, sPassword)
+
+        if(emailValidation() && passwordValidation()){      //validity check
+            mFirebaseAuth.signInWithEmailAndPassword(sEmail, sPassword)     //correctness check
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (!task.isSuccessful()){
-                                //informs the user if login was unsuccessful
                                 Toast.makeText(LoginActivity.this, "Login was unsuccessful", Toast.LENGTH_SHORT).show();
                             }else{
-                                //if successful, logs user in
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             }
                         }
@@ -104,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    //opens the register screen
+    /* loads register page */
     public void onRegisterClick (View view){
         startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
     }
