@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:title="Register"
+            app:titleMarginStart="16dp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/regFirstName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:ems="8"
+                android:hint="Firstname"
+                android:inputType="textPersonName"
+                android:maxLength="16"/>
+
+            <EditText
+                android:id="@+id/regSurname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@id/regFirstName"
+                android:ems="10"
+                android:hint="Surname"
+                android:inputType="textPersonName"
+                android:maxLength="16"/>
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/regSchool"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/regFirstName"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="School"
+            android:inputType="textPersonName"
+            android:maxLength="30"/>
+
+        <EditText
+            android:id="@+id/regEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/regSchool"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="textPersonName"
+            android:maxLength="30"/>
+
+        <EditText
+            android:id="@+id/regPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/regEmail"
+            android:layout_marginTop="16dp"
+            android:ems="8"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:maxLength="20"/>
+
+        <EditText
+            android:id="@+id/regConfirmPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/regPassword"
+            android:layout_marginTop="16dp"
+            android:ems="9"
+            android:hint="Confirm Password"
+            android:inputType="textPassword"
+            android:maxLength="20"/>
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/regConfirmPassword"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="32dp"
+            android:onClick="onSubmitClick"
+            android:text="Submit" />
+
+    </LinearLayout>
+
+</LinearLayout>

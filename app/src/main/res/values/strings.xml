@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">CourseWork</string>
+    <string name="Free">Free</string>
+
+    <string-array name="colours">
+        <item>Red</item>
+        <item>Green</item>
+        <item>Blue</item>
+        <item>Orange</item>
+        <item>Purple</item>
+    </string-array>
+</resources>

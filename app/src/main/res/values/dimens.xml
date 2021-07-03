@@ -1,0 +1,9 @@
+<resources>
+    <dimen name="prof_textMargin">48dp</dimen>
+    <dimen name="prof_btnEdit">40dp</dimen>
+    <dimen name="txtTT">16dp</dimen>
+    <dimen name="cardWidthTT">184dp</dimen>
+    <dimen name="cardHeightTT">42dp</dimen>
+    <dimen name="dayCardHeightTT">92dp</dimen>
+    <dimen name="AmPmCardHeightTT">40dp</dimen>
+</resources>

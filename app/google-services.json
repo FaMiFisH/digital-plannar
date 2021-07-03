@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "544091270091",
+    "project_id": "a-level-coursework-c6ca2",
+    "storage_bucket": "a-level-coursework-c6ca2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:544091270091:android:a94f2b311e62a0db50a44e",
+        "android_client_info": {
+          "package_name": "com.example.a_level_coursework"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "544091270091-ljp1eh86sp36m9l1f1shhgblqeb1n3ht.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpCMnZJoUTa4YSNR5uGKRcXgU5VRTVgys"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "544091270091-ljp1eh86sp36m9l1f1shhgblqeb1n3ht.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
