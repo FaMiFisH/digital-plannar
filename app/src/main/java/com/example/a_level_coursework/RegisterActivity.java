@@ -25,16 +25,13 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
-    FirebaseAuth mFirebaseAuth;
-    FirebaseFirestore mFirestore;
-    EditText FirstName, Surname, Email, School, Password, confirmPassword;
-    String sFirstName, sSurname, sEmail, sSchool, sPassword, sConfirmPassword, userID;
-    DocumentReference userRef;
-    //confirmation variable
-    private String confirm = "";
-    //validation for numeric input
-    private Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
-    //sets the validation standards for passwords
+
+    //initialising variables
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseFirestore mFirestore;
+    private EditText firstName, surname, email, school, password, confirmPassword;
+    private boolean emailCheck = true;
+    private static final Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
     private static final Pattern passwordPattern =
             Pattern.compile("^" +
                     "(?=.*[0-9])" +         //at least 1 digit
@@ -46,22 +43,25 @@ public class RegisterActivity extends AppCompatActivity {
                     ".{4,}" +               //at least 4 characters
                     "$");
 
+    //initialising key names for the HashMap
+    private final String usersCollection = "users";
+    private final String usersUserID = "user_ID";
+    private final String usersFirstName = "first name";
+    private final String usersSurname = "surname";
+    private final String usersEmail = "email";
+    private final String usersSchool = "school";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
 
-        //initialises firebase database
+        //initialising database instances
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
-        userID = mFirebaseAuth.getCurrentUser().getUid();
-        //initialises references
-        userRef = mFirestore
-                .collection("users")
-                .document(userID);
     }
 
-    //checks for number in the string
+    /* check for numbers in the string */
     //PROBLEM: a number and letter combination still works
     private boolean isNumeric(String strNum) {
         if (strNum == null) {
@@ -70,109 +70,98 @@ public class RegisterActivity extends AppCompatActivity {
         return pattern.matcher(strNum).matches();
     }
 
-    //checks if first name is a valid input
-    private boolean firstnameValidation() {
-        sFirstName = FirstName.getText().toString();
+    /* checks if firstName is a valid input */
+    private boolean firstnameValidation(String sFirstName) {
         if (sFirstName.isEmpty()) {
-            FirstName.setError("Fields can't be empty");
+            firstName.setError("Field can not be empty");
             return false;
         } else if (isNumeric(sFirstName)) {
-            FirstName.setError("Field contains a number");
+            firstName.setError("Field contains a number");
             return false;
         } else {
-            FirstName.setError(null);
+            firstName.setError(null);
             return true;
         }
     }
 
-    //checks if surname is a valid input
-    private boolean surnameValidation() {
-        sSurname = Surname.getText().toString();
+    /* checks if surname is a valid input */
+    private boolean surnameValidation(String sSurname) {
         if (sSurname.isEmpty()) {
-            Surname.setError("Fields can't be empty");
+            surname.setError("Field can not be empty");
             return false;
         } else if (isNumeric(sSurname)) {
-            Surname.setError("Field contains a number");
+            surname.setError("Field contains a number");
             return false;
         } else {
-            Surname.setError(null);
+            surname.setError(null);
             return true;
         }
     }
 
     //checks if email is a valid input
-    private boolean emailValidation() {
-        sEmail = Email.getText().toString();
-
+    private boolean emailValidation(String sEmail){
         if (sEmail.isEmpty()) {
-            Email.setError("Fields can't be empty");
+            email.setError("Field can't be empty");
             return false;
         }else if (!Patterns.EMAIL_ADDRESS.matcher(sEmail).matches()) {
-            Email.setError("Please enter a valid email");
+            email.setError("Please enter a valid email");
             return false;
         } else {
             checkEmail(sEmail);
-            if(confirm == "true"){
-                return false;
-            }else {
-                return true;
-            }
+            return !emailCheck;
         }
     }
 
-    //checks if school is a valid input
-    private boolean schoolValidation() {
-        sSchool = School.getText().toString();
-        if (sSchool.isEmpty()) {
-            School.setError("Fields can't be empty");
-            return false;
-        } else if (isNumeric(sSchool)) {
-            School.setError("Field contains a number");
-            return false;
-        } else {
-            School.setError(null);
-            return true;
-        }
-    }
-
-    //checks if email already exists
-    private void checkEmail(final String email){
+    /* checks if email already exists */
+    private void checkEmail(String sEmail){
         mFirebaseAuth
-                .fetchSignInMethodsForEmail(email)
+                .fetchSignInMethodsForEmail(sEmail)
                 .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
                     @Override
                     public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
                         boolean check = !task.getResult().getSignInMethods().isEmpty();
                         if(check){
-                            Email.setError("Email already exists");
-                            confirm = "true";
+                            email.setError("Email already exists");
+                            emailCheck = true;
                         }else {
-                            confirm = "false";
+                            emailCheck = false;
                         }
                     }
                 });
     }
 
-    //checks if password is valid and strong enough
-    private boolean passwordValidation() {
-        sPassword = Password.getText().toString();
-        if (sPassword.isEmpty()) {
-            Password.setError("Fields can't be empty");
+    //checks if school is a valid input
+    private boolean schoolValidation(String sSchool) {
+        if (sSchool.isEmpty()) {
+            school.setError("Field can not be empty");
             return false;
-        }else if (!passwordPattern.matcher(sPassword).matches()) {
-            Password.setError("Password too weak");
+        } else if (isNumeric(sSchool)) {
+            school.setError("Field contains a number");
             return false;
         } else {
-            Password.setError(null);
+            school.setError(null);
             return true;
         }
     }
 
-    //checks if the passwords match
-    private boolean confirmPasswordValidation() {
-        sConfirmPassword = confirmPassword.getText().toString();
+    /* checks if password is valid and strong enough */
+    private boolean passwordValidation(String sPassword) {
+        if (sPassword.isEmpty()) {
+            password.setError("Field can not be empty");
+            return false;
+        }else if (!passwordPattern.matcher(sPassword).matches()) {
+            password.setError("Password is too weak");
+            return false;
+        } else {
+            password.setError(null);
+            return true;
+        }
+    }
+
+    /* checks if the passwords match */
+    private boolean confirmPasswordValidation(String sPassword, String sConfirmPassword) {
         if (sConfirmPassword.isEmpty()) {
-            confirmPassword.setError("Fields can't be empty");
+            confirmPassword.setError("Field can not be empty");
             return false;
         } else if (!sConfirmPassword.equals(sPassword)) {
             confirmPassword.setError("Passwords do not match");
@@ -183,24 +172,31 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    //runs when users clicks submit button
+    /* executes the submit */
     public void onSubmitClick(View view) {
+
         //retrieves user inputs
-        Email = findViewById((R.id.regEmail));
-        Password = findViewById(R.id.regPassword);
-        FirstName = findViewById(R.id.regFirstName);
-        Surname = findViewById(R.id.regSurname);
-        Password = findViewById(R.id.regPassword);
+        email = findViewById((R.id.regEmail));
+        firstName = findViewById(R.id.regFirstName);
+        surname = findViewById(R.id.regSurname);
+        password = findViewById(R.id.regPassword);
         confirmPassword = findViewById(R.id.regConfirmPassword);
-        School = findViewById(R.id.regSchool);
+        school = findViewById(R.id.regSchool);
 
-        if (firstnameValidation()
-                && surnameValidation()
-                && emailValidation()
-                && schoolValidation()
-                && passwordValidation()
-                && confirmPasswordValidation()) {
+        //converts user inputs to strings
+        String sEmail = email.getText().toString();
+        String sPassword = password.getText().toString();
+        String sFirstName = firstName.getText().toString();
+        String sSurname = surname.getText().toString();
+        String sConfirmPassword = confirmPassword.getText().toString();
+        String sSchool = school.getText().toString();
 
+        if (firstnameValidation(sFirstName)
+                && surnameValidation(sSurname)
+                && emailValidation(sEmail)
+                && schoolValidation(sSchool)
+                && passwordValidation(sPassword)
+                && confirmPasswordValidation(sPassword, sConfirmPassword)) {
             mFirebaseAuth
                     .createUserWithEmailAndPassword(sEmail, sPassword)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -209,12 +205,18 @@ public class RegisterActivity extends AppCompatActivity {
                             if (!task.isSuccessful()){
                                 Toast.makeText(RegisterActivity.this, "Registration was unsuccessful", Toast.LENGTH_SHORT).show();
                             }else{
+                                String userID = mFirebaseAuth.getCurrentUser().getUid();
+                                //initialises database reference
+                                DocumentReference userRef = mFirestore
+                                        .collection(usersCollection)
+                                        .document(userID);
+
                                 Map<String,Object> user = new HashMap<>();
-                                user.put("first name", sFirstName);
-                                user.put("surname", sSurname);
-                                user.put("school", sSchool);
-                                user.put("email", sEmail);
-                                user.put("user_ID", userID);
+                                user.put(usersFirstName, sFirstName);
+                                user.put(usersSurname, sSurname);
+                                user.put(usersSchool, sSchool);
+                                user.put(usersEmail, sEmail);
+                                user.put(usersUserID, userID);
                                 userRef
                                         .set(user)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
