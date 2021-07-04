@@ -52,10 +52,10 @@ public class MainActivity extends AppCompatActivity {
         //initialises firebase and firestore
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
-        //retrieves current user ID
+
         userID = mFirebaseAuth.getCurrentUser().getUid();
-        //initialises references
         userRef = mFirestore.collection("users").document(userID);
+
         //initialises current users school
         userRef .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

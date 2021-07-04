@@ -205,19 +205,19 @@ public class RegisterActivity extends AppCompatActivity {
                             if (!task.isSuccessful()){
                                 Toast.makeText(RegisterActivity.this, "Registration was unsuccessful", Toast.LENGTH_SHORT).show();
                             }else{
-                                //gets the suer ID after it has been created
                                 String userID = mFirebaseAuth.getCurrentUser().getUid();
-                                //initialises database reference
                                 DocumentReference userRef = mFirestore
                                         .collection(usersCollection)
                                         .document(userID);
 
+                                //initialise a HashMap to store the values
                                 Map<String,Object> user = new HashMap<>();
                                 user.put(usersFirstName, sFirstName);
                                 user.put(usersSurname, sSurname);
                                 user.put(usersSchool, sSchool);
                                 user.put(usersEmail, sEmail);
                                 user.put(usersUserID, userID);
+
                                 userRef
                                         .set(user)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -228,6 +228,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         }).addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
+                                        FirebaseAuth.getInstance().signOut();
                                         Toast.makeText(RegisterActivity.this,"Firestore was unsuccessful", Toast.LENGTH_SHORT).show();
                                     }
                                 });
