@@ -228,6 +228,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         }).addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
+                                        //POTENTIAL PROBLEM: might also need to delete user authentication
                                         FirebaseAuth.getInstance().signOut();
                                         Toast.makeText(RegisterActivity.this,"Firestore was unsuccessful", Toast.LENGTH_SHORT).show();
                                     }
