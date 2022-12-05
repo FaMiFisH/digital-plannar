@@ -1,2 +1,2 @@
 
-Digital plannar mobile app for teachers and tutors.
+Digital plannar android mobile app for teachers and tutors.
